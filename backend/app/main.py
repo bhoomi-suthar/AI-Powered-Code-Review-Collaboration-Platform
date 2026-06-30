@@ -55,4 +55,4 @@ async def root():
 
 app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
 
-socket_app = socketio.ASGIApp(sio, app)
+app = socketio.ASGIApp(sio, app)
