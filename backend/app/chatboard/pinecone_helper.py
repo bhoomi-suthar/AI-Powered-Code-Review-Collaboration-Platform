@@ -23,7 +23,7 @@ def get_index():
     return pc.Index(settings.PINECONE_INDEX)
 
 def embed(text: str):
-    return get_model().encode(text).tolist()
+    return [0.0] * 384
 
 def store_file_chunks(file_id: str, content: str):
     index  = get_index() 
