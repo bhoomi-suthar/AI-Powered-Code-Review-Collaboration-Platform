@@ -1,65 +1,51 @@
-from pinecone import Pinecone, ServerlessSpec
-from sentence_transformers import SentenceTransformer
+from pinecone import Pinecone
 from app.config import settings
-
-_model = None
-
-def get_model():
-    global _model
-    if _model is None:
-        _model = SentenceTransformer("all-MiniLM-L6-v2")
-    return _model
 
 pc = Pinecone(api_key=settings.PINECONE_API_KEY)
 
 def get_index():
     if settings.PINECONE_INDEX not in pc.list_indexes().names():
-        pc.create_index(
+        pc.create_index_for_model(
             name=settings.PINECONE_INDEX,
-            dimension=384,
-            metric="cosine",
-            spec=ServerlessSpec(cloud="aws", region="us-east-1")
+            cloud="aws",
+            region="us-east-1",
+            embed={
+                "model": "llama-text-embed-v2",
+                "field_map": {"text": "text"}
+            }
         )
     return pc.Index(settings.PINECONE_INDEX)
 
-def embed(text: str):
-    return [0.0] * 384
-
 def store_file_chunks(file_id: str, content: str):
-    index  = get_index() 
-    lines  = content.splitlines()
-    chunks = []
+    index   = get_index()
+    lines   = content.splitlines()
+    records = []
 
-    # Split into chunks of 30 lines
-    for i in range(0, len(lines), 30):       
+    for i in range(0, len(lines), 30):
         chunk_text = "\n".join(lines[i:i+30])
         if not chunk_text.strip():
             continue
-        chunk_id  = f"{file_id}_chunk_{i}"
-        vector    = embed(chunk_text)
-        chunks.append({
-            "id":     chunk_id,
-            "values": vector,
-            "metadata": {
-                "file_id": file_id,
-                "text":    chunk_text
-            }
+        records.append({
+            "_id":     f"{file_id}_chunk_{i}",
+            "text":    chunk_text,
+            "file_id": file_id
         })
 
-    if chunks:
-        index.upsert(vectors=chunks)
+    if records:
+        index.upsert_records(namespace="__default__", records=records)
 
 def search_file(file_id: str, question: str, top_k: int = 3):
     index   = get_index()
-    vector  = embed(question)
-    results = index.query(
-        vector=vector,
-        top_k=top_k,
-        filter={"file_id": {"$eq": file_id}},
-        include_metadata=True
+    results = index.search(
+        namespace="__default__",
+        query={
+            "inputs": {"text": question},
+            "top_k": top_k,
+            "filter": {"file_id": file_id}
+        }
     )
-    return [m.metadata["text"] for m in results.matches]
+    return [hit["fields"]["text"] for hit in results["result"]["hits"]]
 
 def delete_file_chunks(file_id: str):
     index = get_index()
-    index.delete(filter={"file_id": {"$eq": file_id}})
+    index.delete(filter={"file_id": {"$eq": file_id}}, namespace="__default__")
