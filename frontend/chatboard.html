@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>File Chatboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CodeReview AI</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <span id="username-display" onclick="window.location.href='profile.html'"
+                style="cursor:pointer; color:#4a6cf7; font-weight:600;" title="View Profile"></span>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container" style="max-width:800px; margin:0 auto;">
+
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px; margin-top:16px;">
+            <button onclick="history.back()" class="btn btn-secondary">Back</button>
+            <h2 style="margin:0; color:#222;">File Chatboard</h2>
+        </div>
+
+        <div class="card" style="margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div id="file-info" style="font-size:14px; color:#888;">Loading file info...</div>
+                <button onclick="clearChatHistory()"
+                    style="background:none; border:none; cursor:pointer; font-size:13px; color:#e74c3c;">Clear</button>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="card" style="margin-bottom:16px;">
+            <div id="chat-messages" style="min-height:300px; max-height:450px; overflow-y:auto; padding:8px;">
+                <div id="placeholder-text" style="text-align:center; color:#aaa; font-size:14px; margin-top:120px;">
+                    Ask anything about this file...
+                </div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="card">
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="question-input" placeholder="Ask a question about this file..."
+                    style="flex:1; padding:12px; border:1px solid #ddd; border-radius:8px; outline:none; font-size:14px;"
+                    onkeydown="if(event.key==='Enter') askQuestion()">
+                <button class="btn btn-primary" onclick="askQuestion()" id="ask-btn">Ask</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/chatboard.js"></script>
+</body>
+
+</html>

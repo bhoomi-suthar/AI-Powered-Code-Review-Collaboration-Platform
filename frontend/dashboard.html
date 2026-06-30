@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CodeReview AI</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="analytics.html">Analytics</a>
+
+            <a id="super-panel-link" href="superuser.html" style="display:none;">
+                Super Panel
+            </a>
+
+            <span id="username-display" onclick="window.location.href='profile.html'"
+                style="cursor:pointer; color:#4a6cf7; font-weight:600;" title="View Profile"></span>
+            <div style="position:relative; display:inline-block;">
+                <button class="btn btn-secondary" onclick="toggleNotifications()" style="position:relative;">
+                    Notifications
+                    <span id="notif-count"
+                        style="display:none; position:absolute; top:-6px; right:-6px; background:#e74c3c; color:#fff; border-radius:50%; width:18px; height:18px; font-size:11px; line-height:18px; text-align:center;">0</span>
+                </button>
+                <div id="notif-dropdown"
+                    style="display:none; position:absolute; right:0; top:44px; width:320px; background:#fff; border:1px solid #e0e0e0; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); z-index:9999; max-height:400px; overflow-y:auto;">
+                    <div
+                        style="padding:14px 16px; border-bottom:1px solid #e0e0e0; font-weight:700; font-size:14px; color:#222; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Chat Notifications</span>
+                        <span onclick="clearNotifications()"
+                            style="font-size:12px; color:#4a6cf7; cursor:pointer; font-weight:400;">Clear all</span>
+                    </div>
+                    <div id="notif-list">
+                        <div style="padding:20px; text-align:center; color:#aaa; font-size:13px;">No notifications yet
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number" id="total-projects">0</div>
+                <div class="stat-label">Total Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-files">0</div>
+                <div class="stat-label">Files Uploaded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-reviews">0</div>
+                <div class="stat-label">AI Reviews Done</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-commits">0</div>
+                <div class="stat-label">Total Commits</div>
+            </div>
+        </div>
+
+        <div style="max-width:800px; margin:0 auto;">
+            <div class="section-header">
+                <h2>My Projects</h2>
+                <button class="btn btn-primary" onclick="showModal()">New Project</button>
+            </div>
+            <div id="projects-list"></div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-overlay"
+        style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; justify-content:center; align-items:center;">
+        <div
+            style="background:#fff; border-radius:16px; padding:32px; width:460px; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+            <h3 style="margin-bottom:20px; font-size:18px; color:#222;">Create New Project</h3>
+            <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" id="project-name" placeholder="My Awesome Project">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="project-desc" rows="3" placeholder="What is this project about?"></textarea>
+            </div>
+            <div id="modal-alert"></div>
+            <div style="display:flex; gap:10px; margin-top:12px;">
+                <button class="btn btn-primary" onclick="createProject()">Create Project</button>
+                <button class="btn btn-secondary" onclick="hideModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

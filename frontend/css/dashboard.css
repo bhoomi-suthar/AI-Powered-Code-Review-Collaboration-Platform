@@ -1,0 +1,150 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Stats Row */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    color: #4a6cf7;
+    margin-bottom: 6px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+}
+
+/* Main Grid */
+.main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    color: #222;
+    font-weight: 700;
+}
+
+/* Project Card */
+.project-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.project-card:hover {
+    border-color: #4a6cf7;
+    box-shadow: 0 4px 16px rgba(74,108,247,0.1);
+}
+
+.project-card h3 {
+    font-size: 16px;
+    color: #222;
+    margin-bottom: 6px;
+}
+
+.project-card p {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 12px;
+}
+
+.project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* Activity Feed */
+.activity-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.activity-item .activity-user {
+    font-weight: 600;
+    color: #4a6cf7;
+}
+
+.activity-item .activity-action {
+    color: #555;
+}
+
+.activity-item .activity-time {
+    color: #aaa;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.project-card {
+    position: relative;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    padding: 5px 10px;
+    font-size: 12px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #e74c3c;
+    color: white;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 0.9;
+}

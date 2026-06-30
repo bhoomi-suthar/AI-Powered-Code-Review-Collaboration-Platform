@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI Review — AI Code Review</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/review.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CodeReview AI</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <button class="btn btn-secondary" onclick="goBack()">Back to Project</button>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="review-container">
+
+        <div class="review-header card">
+            <h1 id="review-title">AI Code Review</h1>
+            <p id="review-subtitle" style="color:#888; margin-top:6px;">Click Run Review to analyze your code</p>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="runReview()">Run AI Review</button>
+        </div>
+
+        <!-- Loading -->
+        <div id="review-loading" style="display:none; margin-top:20px;">
+            <div class="card" style="text-align:center; padding:40px;">
+                <div class="spinner" style="margin:0 auto 16px;"></div>
+                <p style="color:#888;">AI is analyzing your code. Please wait...</p>
+            </div>
+        </div>
+
+        <!-- Review Result -->
+        <div id="review-result" style="margin-top:20px; display:none;">
+
+            <!-- Score -->
+            <div class="card" style="margin-bottom:16px; text-align:center;">
+                <div style="font-size:48px; font-weight:800; color:#4a6cf7;" id="review-score">0</div>
+                <div style="color:#888; font-size:14px;">Code Quality Score / 100</div>
+                <div id="review-summary" style="margin-top:12px; color:#555; font-size:14px;"></div>
+            </div>
+
+            <!-- Issues -->
+            <div class="card" style="margin-bottom:16px;">
+                <h3 style="margin-bottom:16px; color:#e74c3c;">Issues Found</h3>
+                <div id="issues-list"></div>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="card" style="margin-bottom:16px;">
+                <h3 style="margin-bottom:16px; color:#27ae60;">Suggestions</h3>
+                <div id="suggestions-list"></div>
+            </div>
+
+            <!-- Documentation -->
+            <div class="card">
+                <h3 style="margin-bottom:16px; color:#4a6cf7;">Generated Documentation</h3>
+                <pre id="documentation"
+                    style="background:#f8f9fa; padding:16px; border-radius:8px; font-size:13px; white-space:pre-wrap; border:1px solid #e0e0e0;"></pre>
+            </div>
+
+        </div>
+
+        <!-- Code Content -->
+        <div class="card" style="margin-top:20px;">
+            <h3 style="margin-bottom:12px;">File Content</h3>
+            <pre id="code-content" style="background:#f8f9fa;padding:16px;border-radius:8px;font-size:13px;border:1px solid #e0e0e0;height:500px;
+             overflow:auto;white-space:pre;">Loading file...</pre>
+        </div>
+
+
+        <!-- Comments -->
+        <div class="card" style="margin-top:20px;">
+            <h3 style="margin-bottom:16px;">Comments</h3>
+            <div id="comments-list" style="margin-bottom:16px;"></div>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="comment-input" placeholder="Add a comment..."
+                    style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                <input type="number" id="line-number" placeholder="Line #"
+                    style="width:80px; padding:10px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                <button class="btn btn-primary" onclick="addComment()">Comment</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/review.js"></script>
+</body>
+
+</html>

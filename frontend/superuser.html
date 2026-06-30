@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Super User Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">CodeReview AI</div>
+    <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="analytics.html">Analytics</a>
+        <span id="username-display" onclick="window.location.href='profile.html'"
+                style="cursor:pointer; color:#4a6cf7; font-weight:600;" title="View Profile"></span>
+        <button class="btn btn-secondary" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+
+    <h2 style="margin-bottom:24px; color:#222;">Super User Panel</h2>
+
+    <!-- System Stats -->
+    <div class="stats-row" style="margin-bottom:32px;">
+        <div class="stat-card">
+            <div class="stat-number" id="total-users">0</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="total-projects">0</div>
+            <div class="stat-label">Total Projects</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="total-files">0</div>
+            <div class="stat-label">Total Files</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="total-reviews">0</div>
+            <div class="stat-label">Total Reviews</div>
+        </div>
+    </div>
+
+    <!-- Users Management -->
+    <div class="card" style="margin-bottom:24px;">
+        <h3 style="margin-bottom:16px;">Manage Users</h3>
+        <div id="users-table"></div>
+    </div>
+
+    <!-- All Projects -->
+    <div class="card">
+        <h3 style="margin-bottom:16px;">All Projects</h3>
+        <div id="projects-table"></div>
+    </div>
+
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/superuser.js"></script>
+</body>
+</html>

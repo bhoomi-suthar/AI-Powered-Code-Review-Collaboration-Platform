@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Project — AI Code Review</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/review.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CodeReview AI</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="analytics.html">Analytics</a>
+            <span id="username-display" onclick="window.location.href='profile.html'"
+                style="cursor:pointer; color:#4a6cf7; font-weight:600;" title="View Profile"></span>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <!-- Project Header -->
+        <div class="card" style="margin-bottom:24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h1 id="project-name" style="font-size:22px; color:#222;">Loading...</h1>
+                    <p id="project-desc" style="color:#888; margin-top:4px; font-size:14px;"></p>
+                    <a id="github-link" href="#" target="_blank"
+                        style="display:none; margin-top:6px; color:#4a6cf7; font-size:13px; font-weight:600;">View on
+                        GitHub</a>
+                </div>
+
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="btn btn-primary" onclick="showUploadForm()">Upload File</button>
+                    <div style="position:relative; display:inline-flex;">
+                        <button class="btn btn-secondary" onclick="showCollabModal()"
+                            style="border-radius:8px 0 0 8px; border-right:1px solid #ccc;">Add Collaborator</button>
+                        <button onclick="toggleCollabDropdown()"
+                            style="background:#f0f0f0; border:1px solid #ddd; border-left:none; border-radius:0 8px 8px 0; padding:0 10px; cursor:pointer; font-size:14px; color:#333;">▾</button>
+                        <div id="collab-dropdown"
+                            style="display:none; position:absolute; top:44px; right:0; background:#fff; border:1px solid #e0e0e0; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); z-index:9999; min-width:260px; padding:12px;">
+                            <div
+                                style="font-size:13px; font-weight:700; color:#333; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #f0f0f0;">
+                                Collaborators</div>
+                            <div id="collaborators-list">
+                                <div style="color:#aaa; font-size:13px;">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="window.location.href='dashboard.html'">Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Collaborator Modal -->
+        <div id="collab-modal-overlay"
+            style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; justify-content:center; align-items:center;">
+            <div style="background:#fff; border-radius:16px; padding:32px; width:400px;">
+                <h3 style="margin-bottom:16px;">Add Collaborator</h3>
+                <input type="text" id="collab-username" placeholder="Enter username"
+                    style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; margin-bottom:12px;">
+                <input type="email" id="collab-email" placeholder="Enter email"
+                    style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; margin-bottom:12px;">
+                <select id="collab-role"
+                    style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; margin-bottom:12px;">
+                    <option value="editor">Editor (Read & Write)</option>
+                    <option value="viewer">Viewer (Read Only)</option>
+                </select>
+                <div id="collab-alert"></div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="btn btn-primary" onclick="addCollaborator()">Add</button>
+                    <button class="btn btn-secondary" onclick="hideCollabModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="card" id="upload-form" style="display:none; margin-bottom:24px;">
+            <h3 style="margin-bottom:16px;">Upload Code File</h3>
+            <div class="form-group">
+                <label>Select File (py, js, java, cpp, c, ts, html, css, go, rb, php, cs)</label>
+                <input type="file" id="file-input" accept=".py,.js,.java,.cpp,.c,.ts,.html,.css,.go,.rb,.php,.cs">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" onclick="uploadFile()">Upload</button>
+                <button class="btn btn-secondary" onclick="hideUploadForm()">Cancel</button>
+            </div>
+            <div id="upload-alert" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="main-grid">
+
+            <!-- Files Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Files</h2>
+                </div>
+                <div id="files-list">
+                    <div class="loader">
+                        <div class="spinner"></div>
+                        Loading files...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Section -->
+            <div class="section">
+                <div class="section-header" style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="margin:0;">Live Chat</h2>
+                    <a href="#" onclick="clearChat(); return false;"
+                        style="font-size:14px; text-decoration:none; color:#4a6cf7;">Clear all</a>
+                </div>
+                <div class="card" style="display:flex; flex-direction:column; height:450px;">
+
+                    <!-- Pinned Messages -->
+                    <div id="pinned-messages"
+                        style="display:none; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; padding:8px 12px; margin-bottom:8px;">
+                        <div style="font-size:11px; font-weight:700; color:#f9a825; margin-bottom:6px;">📌 Pinned
+                            Messages</div>
+                        <div id="pinned-list"></div>
+                    </div>
+
+                    <div id="chat-messages" style="flex:1; overflow-y:auto; margin-bottom:12px; padding:4px;"></div>
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="chat-input" placeholder="Type a message..."
+                            style="flex:1; padding:10px; border:1px solid #ddd; border-radius:8px; outline:none;">
+                        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Commit History -->
+        <div style="margin-top:24px;">
+            <div class="section-header">
+                <h2>Commit History</h2>
+            </div>
+            <div id="commit-history">
+                <div class="empty-state">Select a file to see commit history.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/socket.js"></script>
+    <script src="js/project.js"></script>
+</body>
+
+</html>
