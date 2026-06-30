@@ -2,7 +2,7 @@ function initSocket(projectId) {
     const script = document.createElement("script");
     script.src = "https://cdn.socket.io/4.7.2/socket.io.min.js";
     script.onload = function () {
-        const socket = io("https://ai-powered-code-review-collaboration.onrender.com", {
+        const socket = io(window.location.origin, {
             transports: ["websocket", "polling"]
         });
 
@@ -12,7 +12,7 @@ function initSocket(projectId) {
         socket.on("connect", () => {
             socket.emit("join_project", {
                 project_id: projectId,
-                username:   username
+                username: username
             });
         });
 
@@ -48,11 +48,11 @@ function initSocket(projectId) {
             loadMessages();
         });
 
-        socket.on("user_joined",   (data) => { console.log(data.message); });
-        socket.on("user_left",     (data) => { console.log(data.message); });
-        socket.on("notification",  (data) => { console.log("Notification:", data.message); });
-        socket.on("disconnect",    ()     => { console.log("Socket disconnected"); });
-        socket.on("connect_error", (err)  => { console.log("Socket error:", err.message); });
+        socket.on("user_joined", (data) => { console.log(data.message); });
+        socket.on("user_left", (data) => { console.log(data.message); });
+        socket.on("notification", (data) => { console.log("Notification:", data.message); });
+        socket.on("disconnect", () => { console.log("Socket disconnected"); });
+        socket.on("connect_error", (err) => { console.log("Socket error:", err.message); });
     };
     document.head.appendChild(script);
 }

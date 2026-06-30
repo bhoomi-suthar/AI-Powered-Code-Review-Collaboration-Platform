@@ -208,7 +208,7 @@ var notificationCount = 0;
     const script = document.createElement("script");
     script.src = "https://cdn.socket.io/4.7.2/socket.io.min.js";
     script.onload = async function () {
-        const socket = io("https://ai-powered-code-review-collaboration.onrender.com", { transports: ["websocket", "polling"] });
+        const socket = io(window.location.origin, { transports: ["websocket", "polling"] });
         const username = localStorage.getItem("username");
         const shown = {};
 
