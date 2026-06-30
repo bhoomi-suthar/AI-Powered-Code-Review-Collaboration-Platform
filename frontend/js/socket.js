@@ -2,7 +2,7 @@ function initSocket(projectId) {
     const script = document.createElement("script");
     script.src = "https://cdn.socket.io/4.7.2/socket.io.min.js";
     script.onload = function () {
-        const socket = io("http://localhost:8000", {
+        const socket = io("https://ai-powered-code-review-collaboration.onrender.com", {
             transports: ["websocket", "polling"]
         });
 

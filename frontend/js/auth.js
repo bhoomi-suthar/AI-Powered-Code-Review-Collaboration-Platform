@@ -1,4 +1,4 @@
-var API = "http://localhost:8000/api";
+var API = "https://ai-powered-code-review-collaboration.onrender.com/api";
 
 async function login() {
     const email = document.getElementById("email").value;
