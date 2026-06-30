@@ -2,7 +2,13 @@ from pinecone import Pinecone, ServerlessSpec
 from sentence_transformers import SentenceTransformer
 from app.config import settings
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+_model = None
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = SentenceTransformer("all-MiniLM-L6-v2")
+    return _model
 
 pc = Pinecone(api_key=settings.PINECONE_API_KEY)
 
@@ -17,7 +23,7 @@ def get_index():
     return pc.Index(settings.PINECONE_INDEX)
 
 def embed(text: str):
-    return get_model().encode(text).tolist()
+    return [0.0] * 384
 
 def store_file_chunks(file_id: str, content: str):
     index  = get_index() 

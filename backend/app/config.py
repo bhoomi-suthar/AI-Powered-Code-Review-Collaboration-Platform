@@ -14,6 +14,7 @@ class Settings:
     PINECONE_API_KEY: str = os.getenv("PINECONE_API_KEY", "")
     PINECONE_INDEX:   str = os.getenv("PINECONE_INDEX", "codereview-files")
     
+    
     HOST: str = os.getenv("HOST", "0.0.0.0")
     PORT: int = int(os.getenv("PORT", 8000))
     UPLOAD_FOLDER: str = os.getenv("UPLOAD_FOLDER", "uploads")
