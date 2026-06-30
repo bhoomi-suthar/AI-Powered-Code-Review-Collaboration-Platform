@@ -31,7 +31,7 @@ def store_file_chunks(file_id: str, content: str):
     chunks = []
 
     # Split into chunks of 30 lines
-    for i in range(0, len(lines), 30):
+    for i in range(0, len(lines), 30):       
         chunk_text = "\n".join(lines[i:i+30])
         if not chunk_text.strip():
             continue
