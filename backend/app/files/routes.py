@@ -50,6 +50,12 @@ async def upload_file(
         content = await file.read()
         await f.write(content)
 
+    # Save content as text in DB too (backup for ephemeral storage)
+    try:
+        text_content = content.decode("utf-8")
+    except Exception:
+        text_content = ""
+
     file_doc = file_model(
         filename=unique_name,
         original_name=file.filename,
@@ -60,6 +66,7 @@ async def upload_file(
         uploaded_by=str(current_user["_id"]),
         uploaded_by_name=current_user["username"]
     )
+    file_doc["content_backup"] = text_content
     result = await db["files"].insert_one(file_doc)
 
     await db["projects"].update_one(
@@ -77,12 +84,10 @@ async def upload_file(
     )
     await db["activities"].insert_one(activity)
 
-    # Auto index in Pinecone
+    # Auto index in Pinecone using already-read content (no disk re-read needed)
     try:
         from app.chatboard.pinecone_helper import store_file_chunks
-        with open(file_path, "r", encoding="utf-8") as f:
-            file_content = f.read()
-        store_file_chunks(str(result.inserted_id), file_content)
+        store_file_chunks(str(result.inserted_id), text_content)
     except Exception as e:
         print(f"Pinecone indexing failed: {e}")
 

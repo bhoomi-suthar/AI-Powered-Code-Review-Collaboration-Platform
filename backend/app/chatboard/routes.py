@@ -18,11 +18,16 @@ async def index_file(file_id: str, current_user: dict = Depends(get_current_user
     if not file:
         raise HTTPException(status_code=404, detail="File not found")
 
+    content = ""
     try:
         async with aiofiles.open(file["file_path"], "r", encoding="utf-8") as f:
             content = await f.read()
     except Exception:
-        raise HTTPException(status_code=500, detail="Could not read file")
+        # File missing on disk (ephemeral storage wiped) — use DB backup
+        content = file.get("content_backup", "")
+
+    if not content.strip():
+        raise HTTPException(status_code=404, detail="File content not available. Please re-upload the file.")
 
     store_file_chunks(file_id, content)
 
